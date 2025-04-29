@@ -66,30 +66,51 @@ const playMusic = (track, pause = false) => {
 }
 
 async function displayAlbums() {
-    let a = await fetch(`/songs/`)
-    let response = await a.text();
-    let div = document.createElement("div")
-    div.innerHTML = response;
-    let anchors = div.getElementsByTagName("a")
-    let cardContainer = document.querySelector(".cardContainer")
-    let array = Array.from(anchors)
-    for (let i = 0; i < array.length; i++) {
-        const e = array[i];
-        if (e.href.includes("/songs/")) {
-            let folder = e.href.split("/").slice(-1)[0]
-            let a = await fetch(`songs/${folder}/info.json`)
-            let response = await a.json();
-            cardContainer.innerHTML = cardContainer.innerHTML + `<div data-folder="${folder}" class="card">
-                        <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="50" cy="50" r="48" fill="#1fdf64" />
-                            <polygon points="40,30 70,50 40,70" fill="black" />
-                        </svg>
-                        <img src="/songs/${folder}/cover.jpeg" alt="">
-                        <h3>${response.title}</h3>
-                        <p>${response.description}</p>
-                    </div>`
+    // let a = await fetch(`/songs/`)
+    // let response = await a.text();
+    // let div = document.createElement("div")
+    // div.innerHTML = response;
+    // let anchors = div.getElementsByTagName("a")
+    let folders = ["krsna", "vibe" , "diljit"];
+    for (let folder of folders) {
+        try {
+            let res = await fetch(`/songs/${folder}/info.json`);
+            let json = await res.json();
+            document.querySelector(".cardContainer").innerHTML += `
+            <div data-folder="${folder}" class="card">
+                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="#1fdf64" />
+                    <polygon points="40,30 70,50 40,70" fill="black" />
+                </svg>
+                <img src="/songs/${folder}/cover.jpeg" alt="">
+                <h3>${json.title}</h3>
+                <p>${json.description}</p>
+            </div>`;
+        } catch (e) {
+            console.error(`Failed to load ${folder}`, e);
         }
     }
+
+
+    // let cardContainer = document.querySelector(".cardContainer")
+    // let array = Array.from(anchors)
+    // for (let i = 0; i < array.length; i++) {
+    //     const e = array[i];
+    //     if (e.href.includes("/songs/")) {
+    //         let folder = e.href.split("/").slice(-1)[0]
+    //         let a = await fetch(`songs/${folder}/info.json`)
+    //         let response = await a.json();
+    //         cardContainer.innerHTML = cardContainer.innerHTML + `<div data-folder="${folder}" class="card">
+    //                     <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    //                         <circle cx="50" cy="50" r="48" fill="#1fdf64" />
+    //                         <polygon points="40,30 70,50 40,70" fill="black" />
+    //                     </svg>
+    //                     <img src="/songs/${folder}/cover.jpeg" alt="">
+    //                     <h3>${response.title}</h3>
+    //                     <p>${response.description}</p>
+    //                 </div>`
+    //     }
+    // }
 
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
@@ -161,14 +182,14 @@ async function main() {
     })
 
     document.querySelector(".volume>img").addEventListener("click", (e) => {
-        if(e.target.src.includes("img/volume.svg")) {
-            e.target.src = e.target.src.replace("img/volume.svg","img/mute.svg")
+        if (e.target.src.includes("img/volume.svg")) {
+            e.target.src = e.target.src.replace("img/volume.svg", "img/mute.svg")
             currentSong.volume = 0;
             document.querySelector(".volume").getElementsByTagName("input")[0].value = 0;
-           
+
         }
         else {
-            e.target.src = e.target.src.replace("img/mute.svg","img/volume.svg")
+            e.target.src = e.target.src.replace("img/mute.svg", "img/volume.svg")
             currentSong.volume = .50;
             document.querySelector(".volume").getElementsByTagName("input")[0].value = 50;
         }
