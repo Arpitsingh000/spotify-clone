@@ -19,7 +19,6 @@ async function getSongs(folder) {
     currFolder = folder;
     let a = await fetch(`/${folder}/`)
     let response = await a.text();
-    console.log(response);
     let div = document.createElement("div")
     div.innerHTML = response;
     let as = div.getElementsByTagName("a")
@@ -50,7 +49,6 @@ async function getSongs(folder) {
     }
     Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e => {
         e.addEventListener("click", element => {
-            console.log(e.querySelector(".info>div").innerText)
             playMusic(e.querySelector(".info>div").innerText)
         })
     })
@@ -79,7 +77,6 @@ async function displayAlbums() {
         const e = array[i];
         if (e.href.includes("/songs/") && !e.href.includes(".htaccess")) {
             let folder = e.href.split("/").slice(-1)[0]
-            console.log(e.href.split("/").slice(-1)[0]);
             let a = await fetch(`/songs/${folder}/info.json`)
             let response = await a.json();
             cardContainer.innerHTML = cardContainer.innerHTML + `<div data-folder="${folder}" class="card">
@@ -106,7 +103,7 @@ async function displayAlbums() {
 
 async function main() {
 
-    await getSongs("songs/love")
+    await getSongs("songs/vibe")
     playMusic(songs[0], true)
 
     await displayAlbums()
@@ -125,7 +122,6 @@ async function main() {
     })
 
     currentSong.addEventListener("timeupdate", () => {
-        console.log(currentSong.currentTime, currentSong.duration);
         document.querySelector(".timeStamp").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)}/${secondsToMinutesSeconds(currentSong.duration)}`
         document.querySelector(".dot").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%"
     })
@@ -161,7 +157,6 @@ async function main() {
     })
 
     document.querySelector(".volume").getElementsByTagName("input")[0].addEventListener("change", (e) => {
-        console.log(e.target.value);
         currentSong.volume = e.target.value / 100
     })
 
