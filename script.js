@@ -14,47 +14,77 @@ function secondsToMinutesSeconds(seconds) {
     return `${formattedMinutes}:${formattedSeconds}`;
 
 }
-
 async function getSongs(folder) {
     currFolder = folder;
-    let a = await fetch(`/${folder}/`)
-    let response = await a.text();
-    let div = document.createElement("div")
-    div.innerHTML = response;
-    let as = div.getElementsByTagName("a")
-    songs = []
-    for (let i = 0; i < as.length; i++) {
-        const element = as[i];
-        if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1])
-        }
-    }
-    let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0]
-    songUL.innerHTML = ""
-    for (const song of songs) {
-        songUL.innerHTML = songUL.innerHTML +
-            `<li>
-             <img class="invert" src="img/music.svg" alt="">
-                    <div class="info ">
-                        <div>${song.replaceAll("%20", " ")} </div>
-                        <div>Arpit</div>
-                    </div>
-                    <div class="playnow">
-                        <span>Play</span>
-                    <div class="invert">
-                        <img src="img/play.svg" alt="">
-                    </div>
-                    </div>
-             </li>`
-    }
-    Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e => {
-        e.addEventListener("click", element => {
-            playMusic(e.querySelector(".info>div").innerText)
-        })
-    })
+    let response = await fetch(`/${folder}/info.json`);
+    let json = await response.json();
+    songs = json.songs;
 
-    return songs
+    let songUL = document.querySelector(".songList ul");
+    songUL.innerHTML = "";
+    for (const song of songs) {
+        songUL.innerHTML += `
+            <li>
+                <img class="invert" src="img/music.svg" alt="">
+                <div class="info">
+                    <div>${song}</div>
+                    <div>Artist Name</div>
+                </div>
+                <div class="playnow">
+                    <span>Play</span>
+                    <div class="invert"><img src="img/play.svg" alt=""></div>
+                </div>
+            </li>`;
+    }
+
+    // click event
+    Array.from(songUL.getElementsByTagName("li")).forEach(e => {
+        e.addEventListener("click", () => {
+            playMusic(e.querySelector(".info > div").innerText);
+        });
+    });
 }
+
+// async function getSongs(folder) {
+//     currFolder = folder;
+//     let a = await fetch(`/${folder}/`)
+//     let response = await a.text();
+//     let div = document.createElement("div")
+//     div.innerHTML = response;
+//     let as = div.getElementsByTagName("a")
+//     songs = []
+//     for (let i = 0; i < as.length; i++) {
+//         const element = as[i];
+//         if (element.href.endsWith(".mp3")) {
+//             songs.push(element.href.split(`/${folder}/`)[1])
+//         }
+//     }
+//     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0]
+//     songUL.innerHTML = ""
+//     for (const song of songs) {
+//         songUL.innerHTML = songUL.innerHTML +
+//             `<li>
+//              <img class="invert" src="img/music.svg" alt="">
+//                     <div class="info ">
+//                         <div>${song.replaceAll("%20", " ")} </div>
+//                         <div>Arpit</div>
+//                     </div>
+//                     <div class="playnow">
+//                         <span>Play</span>
+//                     <div class="invert">
+//                         <img src="img/play.svg" alt="">
+//                     </div>
+//                     </div>
+//              </li>`
+//     }
+//     Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e => {
+//         e.addEventListener("click", element => {
+//             playMusic(e.querySelector(".info>div").innerText)
+//         })
+//     })
+
+//     return songs
+// }
 const playMusic = (track, pause = false) => {
     currentSong.src = `/${currFolder}/` + track;
     if (!pause) {
