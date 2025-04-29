@@ -77,7 +77,7 @@ async function displayAlbums() {
         const e = array[i];
         if (e.href.includes("/songs/")) {
             let folder = e.href.split("/").slice(-1)[0]
-            let a = await fetch(`/songs/${folder}/info.json`)
+            let a = await fetch(`songs/${folder}/info.json`)
             let response = await a.json();
             cardContainer.innerHTML = cardContainer.innerHTML + `<div data-folder="${folder}" class="card">
                         <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
