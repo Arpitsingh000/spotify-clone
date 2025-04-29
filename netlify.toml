@@ -1,0 +1,20 @@
+[[headers]]
+  for = "/songs/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "audio/mpeg"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/songs/*/info.json"
+  [headers.values]
+    Content-Type = "application/json"
+
+[[headers]]
+  for = "/songs/*/cover.jpeg"
+  [headers.values]
+    Content-Type = "image/jpeg"
