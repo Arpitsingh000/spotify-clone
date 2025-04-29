@@ -1,4 +1,8 @@
 {
     "title": "DILJIT DOSANJH",
-    "description": "Diljit Dosanjh songs."
+    "description": "Diljit Dosanjh songs.",
+    "songs": [
+        "peaches.mp3",
+        "vanilla.mp3"
+    ]
 }

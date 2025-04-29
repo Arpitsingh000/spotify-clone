@@ -1,4 +1,7 @@
 {
     "title": "vibe songs",
-    "description": "A collection of vibe songs."
+    "description": "A collection of vibe songs.",
+    "songs": [
+        "your name.mp3"
+    ]
 }

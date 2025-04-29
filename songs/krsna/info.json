@@ -1,4 +1,14 @@
 {
     "title": "KR$NA",
-    "description": "Krsna songs."
+    "description": "Krsna songs.",
+    "songs": [
+        "Blowing up.mp3",
+        "Fall Off.mp3",
+        "I Guess.mp3",
+        "Joota Japani.mp3",
+        "No Cap.mp3",
+        "Say My Name Hindi Version.mp3",
+        "Woh Raat.mp3",
+        "Ykwim.mp3"
+    ]
 }
